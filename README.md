@@ -23,7 +23,9 @@
 
 - Backend
 
-  - Se debe ejecutar el comando `dotnet run` en la carpeta `SupplierPortalAPI/`
+  - Se debe ejecutar los siguientes comandos en la carpeta `SupplierPortalAPI/`
+    - `dotnet ef database update`
+    - `dotnet run`
 
 - Frontend
   - Se deben ejecutar los siguientes comandos en la carpeta `SupplierPortal/`

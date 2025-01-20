@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Role } from '@models/role.model';
 import { RoleService } from '@services/role.service';
+import { MESSAGES } from '@constants/messages.constants';
 
 @Component({
   selector: 'app-register',
@@ -63,12 +64,22 @@ export class RegisterComponent {
       password: this.password,
       roleId: this.role,
     };
+    Swal.fire({
+      title: 'Registrando cuenta',
+      text: MESSAGES.INFO.REGISTERING,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     this.authService.register(registerData).subscribe({
       next: ({ message }) => {
+        Swal.close();
         Swal.fire('Exito', message, 'success');
         this.router.navigate(['/login']);
       },
       error: ({ error }) => {
+        Swal.close();
         Swal.fire('Error', `Error al registrar: ${error.message}`, 'error');
       },
     });

@@ -15,6 +15,7 @@ export const MESSAGES = {
     CREATING_REQUEST: 'La solicitud de compra se creo satisfactoriamente',
   },
   INFO: {
-    LOGGING_IN: 'Por favor espere mientras inicia su sesión',
+    LOGGING_IN: 'Por favor espere mientras inicia su sesión.',
+    REGISTERING: 'Por favor espere mientras registramos su cuenta.',
   },
 };

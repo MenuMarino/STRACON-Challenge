@@ -1,0 +1,69 @@
+<div class="flex items-center justify-center bg-gray-100">
+  <mat-card class="p-8 w-full max-w-md">
+    <h2 class="text-center text-2xl font-semibold mb-6">Registro</h2>
+    <form (ngSubmit)="onSubmit()" class="space-y-4">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Usuario</mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          #usernameField="ngModel"
+          required
+        />
+        <mat-error *ngIf="usernameField.invalid && usernameField.touched">
+          Usuario es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          #passwordField="ngModel"
+          required
+        />
+        <mat-error *ngIf="passwordField.invalid && passwordField.touched">
+          Contraseña es obligatoria
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Rol</mat-label>
+        <mat-select
+          [(ngModel)]="role"
+          name="role"
+          #roleField="ngModel"
+          required
+        >
+          <mat-option *ngFor="let role of roles" [value]="role.id">
+            {{ role.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="roleField.invalid && roleField.touched">
+          Seleccione un rol
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="w-full"
+        [disabled]="!username || !password || !role"
+      >
+        Registrar
+      </button>
+    </form>
+    <p class="text-center text-sm mt-4">
+      ¿Ya tienes una cuenta?
+      <a routerLink="/login" class="text-blue-600 hover:underline">
+        Inicia sesión
+      </a>
+    </p>
+  </mat-card>
+</div>

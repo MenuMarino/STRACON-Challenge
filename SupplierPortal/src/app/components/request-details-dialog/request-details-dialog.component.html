@@ -1,0 +1,97 @@
+<h2 mat-dialog-title class="text-lg font-bold">
+  Detalles de la Solicitud #{{ data.request.requestId }}
+</h2>
+
+<mat-dialog-content>
+  <p><strong>Proveedor:</strong> {{ data.request.supplier.name }}</p>
+  <p><strong>Dirección:</strong> {{ data.request.supplier.address }}</p>
+  <p><strong>Contacto:</strong> {{ data.request.supplier.contact }}</p>
+  <p><strong>Costo Total:</strong> S/. {{ data.request.totalPrice }}</p>
+
+  <h3 class="mt-4 text-lg font-semibold">Productos</h3>
+
+  <ng-container
+    *ngIf="
+      role === 'Colocador' && data.request.status === 'Pendiente';
+      else aprobadorView
+    "
+  >
+    <form [formGroup]="requestForm">
+      <div formArrayName="products">
+        <div
+          *ngFor="let product of products.controls; let i = index"
+          [formGroupName]="i"
+          class="border rounded p-4 mb-4"
+        >
+          <mat-form-field class="w-full mb-4" appearance="fill">
+            <mat-label>Nombre del Producto</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+          <mat-form-field class="w-full mb-4" appearance="fill">
+            <mat-label>Cantidad</mat-label>
+            <input matInput type="number" formControlName="quantity" />
+          </mat-form-field>
+          <mat-form-field class="w-full mb-4" appearance="fill">
+            <mat-label>Precio Unitario</mat-label>
+            <input matInput type="number" formControlName="unitPrice" />
+          </mat-form-field>
+          <mat-form-field class="w-full mb-4" appearance="fill">
+            <mat-label>URL del Producto</mat-label>
+            <input matInput formControlName="productUrl" />
+          </mat-form-field>
+          <button mat-button color="warn" (click)="removeProduct(i)">
+            Eliminar Producto
+          </button>
+        </div>
+      </div>
+      <button mat-button color="primary" (click)="addProduct()">
+        Agregar Producto
+      </button>
+    </form>
+  </ng-container>
+
+  <ng-template #aprobadorView>
+    <ul class="list-disc list-inside">
+      <li
+        *ngFor="let product of data.request.products"
+        class="mb-2 border-b pb-2"
+      >
+        <p><strong>Producto:</strong> {{ product.name }}</p>
+        <p><strong>Cantidad:</strong> {{ product.quantity }}</p>
+        <p><strong>Precio Unitario:</strong> S/. {{ product.unitPrice }}</p>
+        <a
+          [href]="
+            product.productUrl.startsWith('http')
+              ? product.productUrl
+              : 'http://' + product.productUrl
+          "
+          target="_blank"
+          class="text-blue-600 hover:underline"
+        >
+          Ver Producto
+        </a>
+      </li>
+    </ul>
+  </ng-template>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <ng-container
+    *ngIf="role === 'Colocador' && data.request.status === 'Pendiente'"
+  >
+    <button mat-raised-button color="primary" (click)="saveRequest()">
+      Guardar Cambios
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="role === 'Aprobador'">
+    <button mat-raised-button color="primary" (click)="approveRequest()">
+      Aprobar
+    </button>
+    <button mat-raised-button color="warn" (click)="rejectRequest()">
+      Rechazar
+    </button>
+  </ng-container>
+
+  <button mat-button (click)="closeDialog()">Cerrar</button>
+</mat-dialog-actions>

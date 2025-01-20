@@ -1,0 +1,48 @@
+<mat-table [dataSource]="pendingRequests" class="mat-elevation-z8 mb-8">
+  <!-- Request ID Column -->
+  <ng-container matColumnDef="requestId">
+    <mat-header-cell *matHeaderCellDef> ID de Solicitud </mat-header-cell>
+    <mat-cell *matCellDef="let request"> {{ request.requestId }} </mat-cell>
+  </ng-container>
+
+  <!-- Supplier Name -->
+  <ng-container matColumnDef="supplierName">
+    <mat-header-cell *matHeaderCellDef> Proveedor </mat-header-cell>
+    <mat-cell *matCellDef="let request">
+      {{ request.supplier.name }}
+    </mat-cell>
+  </ng-container>
+
+  <!-- Total Price Column -->
+  <ng-container matColumnDef="totalPrice">
+    <mat-header-cell *matHeaderCellDef> Costo Total </mat-header-cell>
+    <mat-cell *matCellDef="let request">
+      {{ request.totalPrice | currency }}
+    </mat-cell>
+  </ng-container>
+
+  <!-- Details Column -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef> Detalles </mat-header-cell>
+    <mat-cell *matCellDef="let request">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="viewRequestDetails(request)"
+      >
+        Ver
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Table Headers and Rows -->
+  <mat-header-row
+    *matHeaderRowDef="['requestId', 'supplierName', 'totalPrice', 'actions']"
+  ></mat-header-row>
+  <mat-row
+    *matRowDef="
+      let row;
+      columns: ['requestId', 'supplierName', 'totalPrice', 'actions']
+    "
+  ></mat-row>
+</mat-table>

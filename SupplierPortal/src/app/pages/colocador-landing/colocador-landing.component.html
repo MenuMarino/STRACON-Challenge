@@ -1,0 +1,133 @@
+<div class="container mx-auto py-2">
+  <h1 class="text-2xl font-bold text-center mt-4 mb-8">Colocador Dashboard</h1>
+
+  <div class="flex justify-center items-start gap-8">
+    <!-- Create Supplier -->
+    <section class="w-1/2">
+      <h2 class="text-xl font-semibold mb-4 text-center">
+        Crear Nuevo Proveedor
+      </h2>
+      <form #supplierForm="ngForm" (ngSubmit)="createSupplier(supplierForm)">
+        <mat-form-field class="w-full mb-4" appearance="fill">
+          <mat-label>Nombre</mat-label>
+          <input matInput name="name" ngModel required />
+        </mat-form-field>
+        <mat-form-field class="w-full mb-4" appearance="fill">
+          <mat-label>Dirección</mat-label>
+          <input matInput name="address" ngModel required />
+        </mat-form-field>
+        <mat-form-field class="w-full mb-4" appearance="fill">
+          <mat-label>Contacto</mat-label>
+          <input matInput name="contact" ngModel required />
+        </mat-form-field>
+        <mat-checkbox name="hasPartnership" ngModel
+          >¿Tiene Alianza?</mat-checkbox
+        >
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="mt-4 w-full"
+        >
+          Crear Proveedor
+        </button>
+      </form>
+    </section>
+
+    <!-- Create Purchase Request -->
+    <section class="w-1/2">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold text-center flex-1">
+          Crear Nueva Solicitud
+        </h2>
+        <a
+          routerLink="/view-requests"
+          class="text-blue-600 hover:underline ml-4"
+        >
+          Ver todas mis solicitudes
+        </a>
+      </div>
+      <form [formGroup]="requestForm" (ngSubmit)="createPurchaseRequest()">
+        <mat-form-field class="w-full mb-4" appearance="fill">
+          <mat-label>Proveedor</mat-label>
+          <mat-select formControlName="supplierId" required>
+            <mat-option
+              *ngFor="let supplier of suppliers"
+              [value]="supplier.supplierId"
+            >
+              {{ supplier.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Products -->
+        <div formArrayName="products">
+          <div
+            *ngFor="let product of products.controls; let i = index"
+            [formGroupName]="i"
+            class="border p-4 rounded-lg mb-4"
+          >
+            <mat-form-field class="w-full mb-4" appearance="fill">
+              <mat-label>Nombre del Producto</mat-label>
+              <input matInput formControlName="name" required />
+            </mat-form-field>
+            <mat-form-field class="w-full mb-4" appearance="fill">
+              <mat-label>Cantidad</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="quantity"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field class="w-full mb-4" appearance="fill">
+              <mat-label>Precio Unitario</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="unitPrice"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field class="w-full mb-4" appearance="fill">
+              <mat-label>URL del Producto</mat-label>
+              <input matInput formControlName="productUrl" />
+              <mat-error
+                *ngIf="product.get('productUrl')?.hasError('required')"
+              >
+                URL es obligatoria
+              </mat-error>
+              <mat-error
+                *ngIf="product.get('productUrl')?.hasError('invalidUrl')"
+              >
+                URL no es válida
+              </mat-error>
+            </mat-form-field>
+            <button
+              mat-raised-button
+              color="warn"
+              (click)="removeProduct(i)"
+              class="w-full"
+              type="button"
+            >
+              Eliminar Producto
+            </button>
+          </div>
+        </div>
+
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="addProduct()"
+          class="w-full mb-4"
+        >
+          Agregar Producto
+        </button>
+
+        <button mat-raised-button color="primary" type="submit" class="w-full">
+          Crear Solicitud
+        </button>
+      </form>
+    </section>
+  </div>
+</div>

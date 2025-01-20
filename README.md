@@ -31,3 +31,7 @@
   - Se deben ejecutar los siguientes comandos en la carpeta `SupplierPortal/`
     - `npm install`
     - `ng serve`
+
+## Documentacion
+
+Las rutas del API se pueden visualizar [aqui](`http://localhost:5108/swagger/index.html`)
